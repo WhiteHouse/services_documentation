@@ -71,7 +71,6 @@ function services_documentation_format_method($element) {
   return $element;
 }
 
-
 /**
  * Implements hook_permission().
  */
