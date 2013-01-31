@@ -13,7 +13,6 @@
   <?php if (!empty($name)): ?>
     <h3><?php print $name; ?></h3>
   <?php endif; ?>
-
   <?php print render($methods); ?>
 </div>
 <!-- /services-documentation-method-bundle -->
