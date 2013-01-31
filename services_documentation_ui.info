@@ -3,3 +3,10 @@ description = Provides UI for Services documentation module.
 core = 7.x
 package = Services
 dependencies[] = services_documentation
+
+
+; Information added by drush on 2013-01-30
+version = ""
+project = "petitions"
+datestamp = "1359587545"
+
