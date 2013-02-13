@@ -2,6 +2,8 @@
 
 /**
  * @file
+ * services_documentation.module
+ *
  * Generates documentation pages for Services resources.
  */
 
@@ -52,15 +54,17 @@ function services_documentation_element_info() {
 function services_documentation_format_method($element) {
 
   // Create HTTP method key.
-  foreach($element['#method']['args'] as $key => $argument) {
+  foreach ($element['#method']['args'] as $key => $argument) {
     if (is_array($argument['source'])) {
       switch (key($argument['source'])) {
         case 'param':
           $element['#method']['args'][$key]['http_method'] = 'GET';
           break;
+
         case 'path':
           $element['#method']['args'][$key]['http_method'] = 'URL';
           break;
+
       }
     }
     else {
@@ -202,7 +206,7 @@ function services_documentation_version_page($version) {
           // For this method, loop through each example bundle, keyed by
           // language. E.g., Javascript, PHP, etc.
           foreach ($example_bundles as $language => $example_bundle) {
-             $element['#example_implementations_bundles'][$language]['#theme'] = 'services_documentation_method_example_implementations_bundles';
+            $element['#example_implementations_bundles'][$language]['#theme'] = 'services_documentation_method_example_implementations_bundles';
 
             // For this example bundle, loop through the implementations.
             // E.g., myExampleJavascriptApp.

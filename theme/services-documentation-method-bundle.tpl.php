@@ -1,11 +1,12 @@
 <?php
 /**
  * @file
+ * services-documentation-method-bundle.tpl.php
+ *
  * Template file for theming a given Services method bundle.
  *
  * Method bundles groups a specific type of method, as defined by Services
  * terminology. E.g., operations, actions, targeted actions.
- *
  */
 ?>
 <!-- services-documentation-method-bundle -->
