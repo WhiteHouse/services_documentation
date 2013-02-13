@@ -1,6 +1,8 @@
 <?php
 /**
  * @file
+ * services-documentation-method.tpl.php
+ *
  * Template file for theming the documentation for a given Services method.
  *
  * Available custom variables:
@@ -35,7 +37,7 @@
 
               <span class="method-argument-source">
                 <?php if (is_array($argument['source'])): ?>
-                  <?php //print key($argument['source']) ?>
+                  <?php // print key($argument['source']) ?>
                   <?php print $argument['http_method'] ?>
                 <?php else: ?>
                   <?php print $argument['source']; ?>
