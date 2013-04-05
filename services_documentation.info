@@ -3,10 +3,3 @@ description = Provides documentation pages for Services resources.
 core = 7.x
 package = services
 dependencies[] = services
-
-
-; Information added by drush on 2013-03-28
-version = ""
-project = "petitions"
-datestamp = "1364512761"
-

@@ -37,7 +37,6 @@
 
               <span class="method-argument-source">
                 <?php if (is_array($argument['source'])): ?>
-                  <?php // print key($argument['source']) ?>
                   <?php print $argument['http_method'] ?>
                 <?php else: ?>
                   <?php print $argument['source']; ?>
