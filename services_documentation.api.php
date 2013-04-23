@@ -42,6 +42,21 @@ function api_resource_users_services_resources() {
 }
 
 /**
+ * Implements of hook_services_documentation_resource_info().
+ *
+ * @return array
+ *   Resource informational elements
+ */
+function api_users_services_documentation_resource_info() {
+  return array(
+    'users' => array(
+      '#description' => t('Returns a list of users.'),
+      '#limit' => t('10 requests per second.'),
+    ),
+  );
+}
+
+/**
  * Documentation callback for index operation of users resource.
  */
 function _api_resource_users_index_doc() {

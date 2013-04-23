@@ -103,6 +103,8 @@ function services_documentation_theme($existing, $type, $theme, $path) {
       'template' => 'services-documentation-resource',
       'variables' => array(
         'name' => NULL,
+        'description' => NULL,
+        'limit' => NULL,
         'method_bundles' => NULL,
       ),
     ),
@@ -193,6 +195,8 @@ function services_documentation_version_page($version) {
   $table_of_contents = array();
   $output = array();
 
+  $resources_information = module_invoke_all('services_documentation_resource_info');
+
   // Build render array for methods belonging to this API version.
   // Cycle through resources. E.g., users, taxonomy_term, etc.
   foreach ($resources as $resource_name => $resource) {
@@ -246,6 +250,15 @@ function services_documentation_version_page($version) {
     // Add properties to for this resource.
     $output[$resource_name]['#theme'] = 'services_documentation_resource';
     $output[$resource_name]['#name'] = $resource_name;
+
+    if ($resources_information[$resource_name]) {
+      if ($resources_information[$resource_name]['#description']) {
+        $output[$resource_name]['#description'] = $resources_information[$resource_name]['#description'];
+      }
+      if ($resources_information[$resource_name]['#limit']) {
+        $output[$resource_name]['#limit'] = $resources_information[$resource_name]['#limit'];
+      }
+    }
 
     // Add this resource to the table of contents.
     $table_of_contents['#items'][$resource_name] = l($resource_name, current_path(), array('fragment' => $resource_name));
