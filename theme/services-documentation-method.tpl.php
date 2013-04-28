@@ -33,7 +33,7 @@
 
             <div class="method-argument-title">
               <em><?php print $argument['type']; ?></em>
-              <strong><?php print $argument['name']; ?></strong>
+              <strong><?php (isset($argument['source']['param'])) ? print $argument['source']['param'] : print $argument['name']; ?></strong>
 
               <span class="method-argument-source">
                 <?php if (is_array($argument['source'])): ?>
