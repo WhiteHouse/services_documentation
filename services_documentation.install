@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function services_documentation_install() {
+  // Set defaults.
+  services_documentation_save_settings();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function services_documentation_uninstall() {
+  $services_documentation_base_path = variable_get('services_documentation_base_path', '');
+  // Remove path alias.
+  if ($path = path_load($services_documentation_base_path)) {
+    path_delete($path);
+  }
+  // Remove variables.
+  variable_del('services_documentation_base_path');
+  variable_del('services_documentation_homepage');
+}

@@ -16,8 +16,8 @@ function services_documentation_menu() {
 
   // API versions overview.
   $versions = $version_info['versions'];
-  $items[$base_path] = array(
-    'title' => 'Services Documentation',
+  $items['services-documentation/versions'] = array(
+    'title' => 'Services Documentation: API Versions',
     'page callback' => 'services_documentation_versions_overview_page',
     'access arguments' => array('view services documentation'),
   );
@@ -32,6 +32,16 @@ function services_documentation_menu() {
       'page arguments' => array("$version"),
     );
   }
+
+  // Provide an administration page for configuring homepage content.
+  $items['admin/config/services/documentation'] = array(
+    'title' => 'Services Documentation',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('services_documentation_configure'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'services_documentation.admin.inc',
+    'description' => "Configure API documentation.",
+  );
 
   return $items;
 }
@@ -164,7 +174,7 @@ function services_documentation_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Page callback for documentation versions overview.
+ * Page callback for documentation homepage.
  */
 function services_documentation_versions_overview_page() {
   $base_path = variable_get('services_documentation_base_path', 'developers');
@@ -369,4 +379,54 @@ function services_documenation_example_implementation_scan_recursively($director
   }
 
   return $results;
+}
+
+/**
+ * Save settings configured by site admin, during install process, or submitted
+ * programtically.
+ *
+ * @param string $services_documentation_base_path
+ *  This path will be declared in services_documentation's implementation of
+ *  hook_menu. It will be used as the base versioned documentation pages.
+ *
+ * @param string $services_documentation_homepage
+ *  Services Documentation provides a list of API versions linking to corresponding
+ *  API documentation at the Drupal path: services-documentation/versions. Provide
+ *  this as a default "home page" by pointing the base path to this page.
+ *
+ * @return boolean
+ */
+function services_documentation_save_settings($services_documentation_base_path = 'developers', $services_documentation_homepage = 'services-documentation/versions') {
+  
+  // Determine if anything has changed.
+  $old_base_path = variable_get('services_documentation_base_path', '');
+  $old_homepage_alias = variable_get('services_documentation_homepage', '');
+  $is_same_base_path = ($services_documentation_homepage == $old_homepage_alias) ? TRUE : FALSE; 
+  $is_same_homepage_alias = ($services_documentation_homepage == $old_homepage_alias) ? TRUE : FALSE;
+
+  // Update stale or missing variables and path aliases.
+  if (!$is_same_base_path || $is_same_homepage_alias) {
+
+    // Delete the stale path alias.
+    if ($path = path_load(array('alias' => $old_base_path))) {
+      path_delete($path);
+    }
+
+    // Save new variables and path alias.
+    variable_set('services_documentation_homepage', $services_documentation_homepage);
+    variable_set('services_documentation_base_path', $services_documentation_base_path);
+    $path = array(
+      'source' => $services_documentation_homepage,
+      'alias' => $services_documentation_base_path,
+    );
+    path_save($path);
+
+    // Notify user.
+    $text = t('Services Documentation\'s base path has been set to @base_path. This is like your documentation "home page". By default your home page points to Services Documentation\'s <a href="@versions">Versions</a> page. You can change this setting <a href="@config">here</a>', array(
+      '@base_path' => $services_documentation_base_path,
+      '@versions' => 'services-documentation/versions',
+      '@config' => '/admin/config/services/documentation',
+    ));
+    drupal_set_message($text);
+  }
 }
