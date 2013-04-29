@@ -424,7 +424,7 @@ function services_documentation_save_settings($services_documentation_base_path 
     // Notify user.
     $text = t('Services Documentation\'s base path has been set to @base_path. This is like your documentation "home page". By default your home page points to Services Documentation\'s <a href="@versions">Versions</a> page. You can change this setting <a href="@config">here</a>', array(
       '@base_path' => $services_documentation_base_path,
-      '@versions' => 'services-documentation/versions',
+      '@versions' => '/services-documentation/versions',
       '@config' => '/admin/config/services/documentation',
     ));
     drupal_set_message($text);

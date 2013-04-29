@@ -20,7 +20,7 @@ function services_documentation_configure() {
   // Designate page to use for "homepage" (at basepath).
   $form['services_documentation_homepage'] = array(
     '#type' => 'textfield',
-    '#title' => t(''),
+    '#title' => t('Services Documentation Home Page'),
     '#default_value' => variable_get('services_documentation_homepage', 'versions'),
     '#description' => "Enter a valid Drupal path for your Services Documentation homepage. For example: node/1 or [services-documentation-base-path]/[recommended-api-version]. If you don't set anything, Services Documentation will simply present a list of links to different versions of documentation for each major API version.",
   );
