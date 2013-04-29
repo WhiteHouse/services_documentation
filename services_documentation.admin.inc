@@ -12,16 +12,16 @@ function services_documentation_configure() {
   // Designate documentation basepath.
   $form['services_documentation_base_path'] = array(
     '#type' => 'textfield',
-    '#title' => t('Set your documentation base path here:'),
-    '#default_value' => variable_get('services_documentation_base_path', 'developers'),
+    '#title' => t('Set your documentation base path here'),
+    '#default_value' => variable_get('services_documentation_base_path', ''),
     '#description' => 'If you enter "developers" here, your documentation will appear at /developers/1000, /developers/2000, /developers/3000. Your documentation homepage will be /developers. If you enter "documentation", your homepage will be /documentation, and your documentation will live here: /documentation/1000, /documentation/2000, etc.',
   );
 
   // Designate page to use for "homepage" (at basepath).
   $form['services_documentation_homepage'] = array(
     '#type' => 'textfield',
-    '#title' => t('Services Documentation Home Page'),
-    '#default_value' => variable_get('services_documentation_homepage', 'versions'),
+    '#title' => t('Services Documentation home page (base path above will point here)'),
+    '#default_value' => variable_get('services_documentation_homepage', ''),
     '#description' => "Enter a valid Drupal path for your Services Documentation homepage. For example: node/1 or [services-documentation-base-path]/[recommended-api-version]. If you don't set anything, Services Documentation will simply present a list of links to different versions of documentation for each major API version.",
   );
 
