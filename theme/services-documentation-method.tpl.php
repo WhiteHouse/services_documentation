@@ -7,6 +7,9 @@
  *
  * Available custom variables:
  * - $name:
+ * - $path:
+ * - $weight:
+ * - $verb:
  * - $description:
  * - $request:
  * - $response:
@@ -16,8 +19,15 @@
 ?>
 <!-- services-documentation-method -->
 <div class="services-documentation-method">
-  <?php if (!empty($name)): ?>
-    <h4 class="method-name"><?php print $name; ?></h4>
+  <?php if (!empty($path)): ?>
+    <h4 class="method">
+      <?php if (!empty($verb)): ?>
+        <span class="method-verb"><?php print $verb; ?></span>
+      <?php endif; ?>
+      <span class="method-path"><?php print $path; ?></span>
+    </h4>
+  <?php elseif (!empty($name)): ?>
+    <h4 class="method"><span class="method-name"><?php print $name; ?></span></h4>
   <?php endif; ?>
 
   <?php if (!empty($description)): ?>

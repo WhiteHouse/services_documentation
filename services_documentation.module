@@ -131,6 +131,9 @@ function services_documentation_theme($existing, $type, $theme, $path) {
       'template' => 'services-documentation-method',
       'variables' => array(
         'name' => NULL,
+        'path' => NULL,
+        'weight' => NULL,
+        'verb' => NULL,
         'description' => NULL,
         'parameters' => NULL,
         'request' => NULL,
@@ -214,6 +217,7 @@ function services_documentation_version_page($version) {
     foreach ($resource as $method_bundle_type => $method_bundle) {
       // Cycle through each operation in bundle. E.g., create, retrieve, etc.
       foreach ($method_bundle as $method_name => $method) {
+
         // Call the documentation callback to generate the render element.
         $documentation_callback = $method['documentation callback'];
         $element = call_user_func_array($documentation_callback, array());
@@ -222,6 +226,8 @@ function services_documentation_version_page($version) {
         // via hook_element_info() implementation.
         $element['#type'] = 'services_documentation_method';
         $element['#method'] = $method;
+        $verb = services_documentation_verbs(variable_get('services_documentation_verbs', 'services'));
+        $element['#verb'] = $verb[$method_name];
 
         // Loop through the example implementation arrays and apply appropriate
         // #theme functions.
@@ -431,4 +437,52 @@ function services_documentation_save_settings($services_documentation_base_path 
     ));
     drupal_set_message($text);
   }
+}
+
+function services_documentation_verbs($style) {
+  $verbs = array();
+
+  switch ($style) {
+    case 'services':
+      $verbs = array(
+        'retrieve' => 'retrieve',
+        'create' => 'create',
+        'update' => 'update',
+        'delete' => 'delete',
+        'index' => 'index',
+      );
+      break;
+
+    case 'http':
+      $verbs = array(
+        'retrieve' => 'GET',
+        'create' => 'POST',
+        'update' => 'PUT',
+        'delete' => 'DELETE',
+        'index' => 'GET',
+      );
+      break;
+
+    case 'crud':
+      $verbs = array(
+        'retrieve' => 'READ',
+        'create' => 'CREATE',
+        'update' => 'UPDATE',
+        'delete' => 'DELETE',
+        'index' => 'READ',
+      );
+      break;
+
+    case 'custom':
+      $verbs = array(
+        'retrieve' => variable_get('services_documentation_verbs_custom_retrieve', 'retrieve'),
+        'create' => variable_get('services_documentation_verbs_custom_create', 'create'),
+        'update' => variable_get('services_documentation_verbs_custom_update', 'update'),
+        'delete' => variable_get('services_documentation_verbs_custom_delete', 'delete'),
+        'index' => variable_get('services_documentation_verbs_custom_index', 'index'),
+      );
+      break;
+  }
+
+  return $verbs;
 }
