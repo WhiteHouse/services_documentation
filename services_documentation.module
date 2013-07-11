@@ -210,7 +210,7 @@ function services_documentation_version_page($version) {
   // Build render array for methods belonging to this API version.
   // Cycle through resources. E.g., users, taxonomy_term, etc.
   foreach ($resources as $resource_name => $resource) {
-    // Cycle through operation bundles. E.g., targeted_actionsm, actions, etc.
+    // Cycle through operation bundles. E.g., targeted_actions, actions, etc.
     foreach ($resource as $method_bundle_type => $method_bundle) {
       // Cycle through each operation in bundle. E.g., create, retrieve, etc.
       foreach ($method_bundle as $method_name => $method) {
@@ -243,7 +243,7 @@ function services_documentation_version_page($version) {
 
                 // Recursively scan directories.
                 $directory = $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#location'];
-                $directory_contents = services_documenation_example_implementation_scan_recursively($directory);
+                $directory_contents = services_documentation_example_implementation_scan_recursively($directory);
                 $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#files'] = $directory_contents;
               }
             }
@@ -294,7 +294,7 @@ function services_documentation_build_documentation($version = NULL) {
   if ($resources = services_get_resources()) {
     // Cycle through resources. E.g., users, taxonomy_term, etc.
     foreach ($resources as $resource_name => $resource) {
-      // Cycle through operation bundles. E.g., targeted_actionsm, actions, etc.
+      // Cycle through operation bundles. E.g., targeted_actions, actions, etc.
       foreach ($resource as $method_bundle_type => $method_bundle) {
         // Cycle through each operation in bundle. E.g., create, retrieve, etc.
         foreach ($method_bundle as $method_name => $method) {
@@ -330,7 +330,7 @@ function services_documentation_build_documentation($version = NULL) {
  *
  * @return array
  *   API version information. 'default_version' is the version that's assumed
- *   if the module doesn't declare an API version. 'versions' is an array
+ *   if the module does not declare an API version. 'versions' is an array
  *   containing the known API versions. 'current_version' is the current
  *   version number.
  */
@@ -348,7 +348,7 @@ function services_documentation_versions_info() {
 /**
  * Recursively scan the directory of an example implementation.
  */
-function services_documenation_example_implementation_scan_recursively($directory) {
+function services_documentation_example_implementation_scan_recursively($directory) {
   $results = array();
   $current_directory = scandir($directory);
 
@@ -357,7 +357,7 @@ function services_documenation_example_implementation_scan_recursively($director
     array_splice($current_directory, 0, 2);
   }
 
-  // Contruct the array that will be returned for output.
+  // Construct the array that will be returned for output.
   foreach ($current_directory as $key => $value) {
     if (!in_array($value, array(".", ".."))) {
       $path = $directory . '/' . $value;
@@ -367,7 +367,7 @@ function services_documenation_example_implementation_scan_recursively($director
       // Recursively scan directories.
       if (is_dir($path)) {
         $results[$value]['#type'] = 'directory';
-        $results[$value]['#children'] = services_documenation_example_implementation_scan_recursively($path);
+        $results[$value]['#children'] = services_documentation_example_implementation_scan_recursively($path);
       }
       // Otherwise output code.
       else {
@@ -383,7 +383,7 @@ function services_documenation_example_implementation_scan_recursively($director
 
 /**
  * Save settings configured by site admin, during install process, or submitted
- * programtically.
+ * programmatically.
  *
  * @param string $services_documentation_base_path
  *  This path will be declared in services_documentation's implementation of

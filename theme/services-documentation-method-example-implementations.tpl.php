@@ -19,7 +19,7 @@
 <div class="services-documentation-method-example-implementation">
   <h7 class="example-name"><?php print $name; ?></h7>
   <?php if($uses_sdk == TRUE): ?>
-    <div class="examample-uses-sdk"><strong>Uses SDK</strong></div>
+    <div class="example-uses-sdk"><strong>Uses SDK</strong></div>
   <?php endif; ?>
   <?php if($description): ?>
     <div class="example-description"><?php print $description; ?></div>

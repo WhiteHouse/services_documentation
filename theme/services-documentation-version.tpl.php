@@ -9,7 +9,7 @@
  * - Methods. E.g., create, update, index, etc.
  *
  * Available custom variables:
- * - $resources: An array of resources for this doumentation version.
+ * - $resources: An array of resources for this documentation version.
  *
  */
 ?>
