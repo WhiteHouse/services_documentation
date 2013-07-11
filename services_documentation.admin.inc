@@ -1,10 +1,12 @@
 <?php
 /**
- * @file services_documentation.admin.inc 
+ * @file
+ * services_documentation.admin.inc
+ * Provides the Services Documentation administrative interface.
  */
 
 /**
- *
+ * Configuration settings for the Services Documentation module.
  */
 function services_documentation_configure() {
   $form = array();
@@ -38,7 +40,9 @@ function services_documentation_configure() {
 
 /**
  * Check to see if values have changed for base_path and homepage alias.
- * If they have, remove old path alias, save new values, and save new path aliases.
+ *
+ * If they have, remove old path alias, save new values, and save new path
+ * aliases.
  *
  * Submit handler for services_documentation_configure form.
  */

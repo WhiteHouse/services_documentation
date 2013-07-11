@@ -10,7 +10,6 @@
  *
  * Available custom variables:
  * - $resources: An array of resources for this documentation version.
- *
  */
 ?>
 <!-- services-documentation-version -->

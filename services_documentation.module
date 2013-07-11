@@ -382,26 +382,28 @@ function services_documentation_example_implementation_scan_recursively($directo
 }
 
 /**
- * Save settings configured by site admin, during install process, or submitted
- * programmatically.
+ * Save settings.
+ *
+ * Settings can be configured by site admin, during install process, or
+ * submitted programmatically.
  *
  * @param string $services_documentation_base_path
- *  This path will be declared in services_documentation's implementation of
- *  hook_menu. It will be used as the base versioned documentation pages.
+ *   This path will be declared in services_documentation's implementation of
+ *   hook_menu. It will be used as the base versioned documentation pages.
  *
  * @param string $services_documentation_homepage
- *  Services Documentation provides a list of API versions linking to corresponding
- *  API documentation at the Drupal path: services-documentation/versions. Provide
- *  this as a default "home page" by pointing the base path to this page.
+ *   Services Documentation provides a list of API versions linking to
+ *   corresponding API documentation at the Drupal path:
+ *   services-documentation/versions. Provide this as a default "home page" by
+ *   pointing the base path to this page.
  *
  * @return boolean
  */
 function services_documentation_save_settings($services_documentation_base_path = 'developers', $services_documentation_homepage = 'services-documentation/versions') {
-  
   // Determine if anything has changed.
   $old_base_path = variable_get('services_documentation_base_path', '');
   $old_homepage_alias = variable_get('services_documentation_homepage', '');
-  $is_same_base_path = ($services_documentation_homepage == $old_homepage_alias) ? TRUE : FALSE; 
+  $is_same_base_path = ($services_documentation_homepage == $old_homepage_alias) ? TRUE : FALSE;
   $is_same_homepage_alias = ($services_documentation_homepage == $old_homepage_alias) ? TRUE : FALSE;
 
   // Update stale or missing variables and path aliases.

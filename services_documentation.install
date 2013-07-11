@@ -1,6 +1,12 @@
 <?php
 
 /**
+ * @file
+ * services_documentation.install
+ * Installation file for Services Documentation.
+ */
+
+/**
  * Implements hook_install().
  */
 function services_documentation_install() {
