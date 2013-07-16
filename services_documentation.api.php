@@ -86,7 +86,7 @@ function services_documentation_versions_alter($info) {
     'versions' => array(1000),
   );
   $info['current_version'] = max($info['versions']);
-  drupal_alter('services_documentation_versions');
+  drupal_alter('services_documentation_versions')
 
   return $info;
 }

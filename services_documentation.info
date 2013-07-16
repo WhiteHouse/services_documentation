@@ -3,3 +3,10 @@ description = Provides documentation pages for Services resources.
 core = 7.x
 package = services
 dependencies[] = services
+
+; Information added by drupal.org packaging script on 2013-04-30
+version = "7.x-1.0-beta5"
+core = "7.x"
+project = "services_documentation"
+datestamp = "1367349315"
+

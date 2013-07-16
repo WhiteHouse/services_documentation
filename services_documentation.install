@@ -1,18 +1,9 @@
 <?php
-
 /**
  * @file
  * services_documentation.install
  * Installation file for Services Documentation.
  */
-
-/**
- * Implements hook_install().
- */
-function services_documentation_install() {
-  // Set defaults.
-  services_documentation_save_settings();
-}
 
 /**
  * Implements hook_uninstall().
@@ -24,6 +15,6 @@ function services_documentation_uninstall() {
     path_delete($path);
   }
   // Remove variables.
-  variable_del('services_documentation_base_path');
-  variable_del('services_documentation_homepage');
+  db_delete('variable')->condition('name', db_like('services_documentation') . '%', 'LIKE')->execute();
+  cache_clear_all('variables', 'cache_bootstrap');
 }

@@ -18,7 +18,7 @@
  */
 ?>
 <!-- services-documentation-method -->
-<div class="services-documentation-method">
+<div class="resource-method">
   <?php if (!empty($path)): ?>
     <h4 class="method">
       <?php if (!empty($verb)): ?>
@@ -30,32 +30,27 @@
     <h4 class="method"><span class="method-name"><?php print $name; ?></span></h4>
   <?php endif; ?>
 
-  <?php if (!empty($description)): ?>
+  <?php if ($description): ?>
     <p class="method-description"><?php print $description; ?></p>
   <?php endif; ?>
 
   <div class="method-arguments">
-    <?php if (!empty($method) && !empty($method['args'])): ?>
-      <span class="title">Arguments</span>
+    <?php if ($method && !empty($method['args'])): ?>
+      <h5 class="title">Arguments</h5>
       <ul>
         <?php foreach ($method['args'] as $argument): ?>
           <li class="method-argument">
 
-            <div class="method-argument-title">
-              <em><?php print $argument['type']; ?></em>
-              <strong><?php (isset($argument['source']['param'])) ? print $argument['source']['param'] : print $argument['name']; ?></strong>
+            <div class="argument-title">
+              <em class="argument-type"><?php print $argument['type']; ?></em>
+              <strong class="argument-key"><?php (isset($argument['source']['param'])) ? print $argument['source']['param'] : print $argument['name']; ?></strong>
 
-              <span class="method-argument-source">
-                <?php if (is_array($argument['source'])): ?>
-                  <?php // print key($argument['source']) ?>
-                  <?php print $argument['http_method'] ?>
-                <?php else: ?>
-                  <?php print $argument['source']; ?>
-                <?php endif; ?>
+              <span class="argument-source">
+                <?php print $argument['http_method'] ?>
               </span>
             </div>
 
-            <div class="method-argument-description">
+            <div class="argument-description">
               <?php if ($argument['optional']): ?>
                 (optional)
               <?php endif; ?>
@@ -68,21 +63,27 @@
     <?php endif; ?>
   </div>
 
-  <?php if (!empty($request)): ?>
-    <h5>Request Example</h5>
-    <pre class="request-example"><?php print $request; ?></pre>
+  <?php if ($request): ?>
+    <div class="method-request">
+      <h5 class="request-title">Request Example</h5>
+      <pre class="request-body"><?php print $request; ?></pre>
+    </div>
   <?php endif; ?>
 
-  <?php if (!empty($response)): ?>
-    <h5>Response Example</h5>
-    <pre class="response-example"><?php print $response; ?></pre>
+  <?php if ($response): ?>
+    <div class="method-response">
+      <h5 class="response-title">Response Example</h5>
+      <pre class="response-body"><?php print $response; ?></pre>
+    </div>
   <?php endif; ?>
 
-  <?php if (!empty($example_implementations_bundles)): ?>
-    <h5>Implementation Examples</h5>
-    <?php foreach ($example_implementations_bundles as $example_implementations_bundle): ?>
-      <?php print render($example_implementations_bundle); ?>
-    <?php endforeach; ?>
+  <?php if ($example_implementations_bundles): ?>
+    <div class="implementations">
+    <h5 class="implementations-title">Implementation Examples</h5>
+      <?php foreach ($example_implementations_bundles as $example_implementations_bundle): ?>
+        <?php print render($example_implementations_bundle); ?>
+      <?php endforeach; ?>
+    </div>
   <?php endif; ?>
 
 </div>
