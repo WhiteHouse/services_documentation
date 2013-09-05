@@ -34,26 +34,10 @@ function api_resource_users_services_resources() {
       'access arguments append' => FALSE,
       // New documentation array keys made available by services_documentation.
       'documentation callback' => '_api_resource_users_index_doc',
-      'documentation versions' => array(1000),
     ),
   );
 
   return $resources;
-}
-
-/**
- * Implements of hook_services_documentation_resource_info().
- *
- * @return array
- *   Resource informational elements
- */
-function api_users_services_documentation_resource_info() {
-  return array(
-    'users' => array(
-      '#description' => t('Returns a list of users.'),
-      '#limit' => t('10 requests per second.'),
-    ),
-  );
 }
 
 /**
@@ -62,31 +46,15 @@ function api_users_services_documentation_resource_info() {
 function _api_resource_users_index_doc() {
   $element = array(
     '#name' => t('name'),
-    '#description' => t('desc'),
+    '#description' => t('Returns a list of users.'),
     // Example request. E.g., a request URL, headers, and a JSON array.
     '#request' => t('request'),
     // Example response. E.g., a JSON array.
     '#response' => t('response'),
+    // Does the method require authentication?
+    '#auth' => TRUE,
+    // '#example_implementations_bundles' => '',
   );
 
   return $element;
-}
-
-
-/**
- * Implements services_documentation_versions_alter().
- *
- * This allows you to define versioning information for your services
- * documentation. This information will be used to generate the documentation
- * overview page.
- */
-function services_documentation_versions_alter($info) {
-  $info = array(
-    'default_version' => 1000,
-    'versions' => array(1000),
-  );
-  $info['current_version'] = max($info['versions']);
-  drupal_alter('services_documentation_versions')
-
-  return $info;
 }

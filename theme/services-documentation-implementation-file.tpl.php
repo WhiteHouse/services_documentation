@@ -19,7 +19,7 @@
   <div class="file-name"><em><?php print $name; ?></em></div>
   <?php if ($type && $type == 'directory' && $children): ?>
     <ul class="file-children"><?php print render($children); ?></ul>
-  <?php else if ($type && $type == 'file' && $contents): ?>
+  <?php elseif ($type && $type == 'file' && $contents): ?>
     <pre class="file-contents"><?php print $contents; ?></pre>
   <?php endif; ?>
 </li>

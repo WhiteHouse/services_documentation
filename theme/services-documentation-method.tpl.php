@@ -11,23 +11,33 @@
  * - $weight:
  * - $verb:
  * - $description:
- * - $request:
- * - $response:
+ * - $request_url: an example, fully formed request URL.
+ * - $request_data: example data to POST along with request.
+ * - $response: example response data.
  * - $example_implementation_bundles:
  * - $method: the method array defined in hook_services_resources().
+ * - $auth (boolean): indicates whether authentication is required.
  */
 ?>
 <!-- services-documentation-method -->
 <div class="resource-method">
   <?php if (!empty($path)): ?>
-    <h4 class="method">
+    <h4 class="method-title">
       <?php if (!empty($verb)): ?>
         <span class="method-verb"><?php print $verb; ?></span>
       <?php endif; ?>
       <span class="method-path"><?php print $path; ?></span>
+      <?php if (!empty($auth)): ?>
+        <span class="method-auth">Authentication Required</span>
+      <?php endif; ?>
     </h4>
   <?php elseif (!empty($name)): ?>
-    <h4 class="method"><span class="method-name"><?php print $name; ?></span></h4>
+    <h4 class="method-title">
+      <span class="method-name"><?php print $name; ?></span>
+      <?php if (!empty($auth)): ?>
+        <span class="method-auth">Authentication Required</span>
+      <?php endif; ?>
+    </h4>
   <?php endif; ?>
 
   <?php if ($description): ?>
@@ -43,17 +53,14 @@
 
             <div class="argument-title">
               <em class="argument-type"><?php print $argument['type']; ?></em>
-              <strong class="argument-key"><?php (isset($argument['source']['param'])) ? print $argument['source']['param'] : print $argument['name']; ?></strong>
-
-              <span class="argument-source">
-                <?php print $argument['http_method'] ?>
-              </span>
+              <strong class="argument-key"><?php print (isset($argument['source']['param']) ? $argument['source']['param'] : $argument['name']); ?></strong>
+              <span class="argument-source"><?php print $argument['http_method']; ?></span>
+              <?php if ($argument['optional']): ?>
+                <span class="argument-optional">(optional)</span>
+              <?php endif; ?>
             </div>
 
             <div class="argument-description">
-              <?php if ($argument['optional']): ?>
-                (optional)
-              <?php endif; ?>
               <?php print $argument['description']; ?>
             </div>
 
@@ -63,14 +70,17 @@
     <?php endif; ?>
   </div>
 
-  <?php if ($request): ?>
+  <?php if (!empty($request_url)): ?>
     <div class="method-request">
       <h5 class="request-title">Request Example</h5>
-      <pre class="request-body"><?php print $request; ?></pre>
+      <div class="request-url"><?php print $request_url; ?></div>
+      <?php if (!empty($request_data)): ?>
+        <pre class="request-body"><?php print $request_data; ?></pre>
+      <?php endif; ?>
     </div>
   <?php endif; ?>
 
-  <?php if ($response): ?>
+  <?php if (!empty($response)): ?>
     <div class="method-response">
       <h5 class="response-title">Response Example</h5>
       <pre class="response-body"><?php print $response; ?></pre>

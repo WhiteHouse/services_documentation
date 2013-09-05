@@ -41,6 +41,14 @@ function services_documentation_configure() {
     '#description' => t('If enabled, a table of contents will be displayed after the introduction of each API version documentation page.'),
   );
 
+  $form['services_documentation_display_bundle_title'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display method bundle titles'),
+    '#default_value' => variable_get('services_documentation_display_bundle_title', FALSE),
+    '#description' => t('If enabled, method bundle titles will be displayed. E.g., operations, relationships, targeted actions, etc.'),
+  );
+
+
   // Designate verbs to use.
   $form['services_documentation_verbs'] = array(
     '#type' => 'radios',
