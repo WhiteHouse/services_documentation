@@ -6,7 +6,7 @@
 
 
 /**
- * Generates an array of Services resources keyed by API version.
+ * Generates an array of Services resources keyed by endpoint.
  */
 function services_documentation_build_documentation($endpoint) {
   $documentation_resources = array();
@@ -70,7 +70,50 @@ function services_documentation_method_element($method) {
   $element['#type'] = 'services_documentation_method';
   $element['#method'] = isset($element['#method']) ? array_merge_recursive($method, (array) $element['#method']) : $method;
 
+  // Set HTTP verb for method, if necessary.
+  if (empty($element['#verb'])) {
+    $verbs = services_documentation_verbs(variable_get('services_documentation_verbs', 'services'));
+    if (!empty($verbs[$method['name']])) {
+      $element['#verb'] = $verbs[$method['name']];
+    }
+  }
+
+  // Attache example implementations.
+  services_documentation_method_element_examples($element);
+
   return $element;
+}
+
+/**
+ * Attaches example implmentations to a method element.
+ */
+function services_documentation_method_element_examples(&$element) {
+  // Loop through the example implementation arrays and apply appropriate
+  // #theme functions.
+  if (!empty($element['#example_implementations_bundles'])) {
+    $example_bundles = $element['#example_implementations_bundles'];
+
+    // For this method, loop through each example bundle, keyed by
+    // language. E.g., Javascript, PHP, etc.
+    foreach ($example_bundles as $language => $example_bundle) {
+      $element['#example_implementations_bundles'][$language]['#theme'] = 'services_documentation_implementation_bundle';
+
+      // For this example bundle, loop through the implementations.
+      // E.g., myExampleJavascriptApp.
+      foreach ($example_bundle['#examples'] as $example_name => $example) {
+        $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#theme'] = 'services_documentation_implementation';
+
+        // For this implementation, scan the files and directories.
+        if ($element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#location']) {
+
+          // Recursively scan directories.
+          $directory = $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#location'];
+          $directory_contents = services_documentation_example_implementation_scan_recursively($directory);
+          $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#files'] = $directory_contents;
+        }
+      }
+    }
+  }
 }
 
 /**
