@@ -15,7 +15,7 @@ function services_documentation_menu() {
 
   // API versions overview.
   $endpoints = services_endpoint_load_all();
-  $items['services-documentation/versions'] = array(
+  $items[$base_path] = array(
     'title' => 'Services Documentation: API Versions',
     'page callback' => 'services_documentation_versions_overview_page',
     'page arguments' => array($endpoints),
@@ -202,7 +202,7 @@ function services_documentation_format_method($element) {
 
 
   if (!empty($element['#request_url']) && valid_url($element['#request_url'])) {
-    $element['#request_url'] = l(check_plain($element['#request_url']), $element['#request_url']);
+    $element['#request_url'] = l(check_plain($element['#request_url']), $element['#request_url'], array('html' => TRUE));
   }
 
   return $element;

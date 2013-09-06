@@ -30,6 +30,7 @@ function services_documentation_build_documentation($endpoint) {
             if (is_array($resource[$method_bundle_type][$method_name])) {
               // @todo make callback optional, add UI for specifying values.
               if (!empty($method['documentation callback'])) {
+
                 $documentation_resources[$resource_name][$method_bundle_type][$method_name] = $method;
               }
             }

@@ -53,7 +53,7 @@
             <div class="argument-title">
               <em class="argument-type"><?php print $argument['type']; ?></em>
               <strong class="argument-key">
-                <?php print (is_array($argument['source'] && !empty($argument['source']['param'])) ? $argument['source']['param'] : $argument['name']); ?></strong>
+                <?php print (is_array($argument['source']) ? $argument['source']['param'] : $argument['name']); ?></strong>
               <span class="argument-source"><?php print $argument['http_method']; ?></span>
               <?php if ($argument['optional']): ?>
                 <span class="argument-optional">(optional)</span>
