@@ -103,6 +103,7 @@ function services_documentation_theme($existing, $type, $theme, $path) {
       'path' => $theme_path,
       'template' => 'services-documentation-method',
       'variables' => array(
+        'anchor' => NULL,
         'name' => NULL,
         'path' => NULL,
         'weight' => NULL,

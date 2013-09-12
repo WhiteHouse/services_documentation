@@ -53,6 +53,9 @@ function _api_resource_users_index_doc() {
     '#response' => t('response'),
     // Does the method require authentication?
     '#auth' => TRUE,
+    // The endpoint path will be prepended to this. You should include the
+    // resource and method suffixes.
+    '#path' => 'users/index',
     // '#example_implementations_bundles' => '',
   );
 

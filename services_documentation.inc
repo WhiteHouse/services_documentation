@@ -48,6 +48,7 @@ function services_documentation_build_documentation($endpoint) {
  * Generate a renderable element for a services documentation method.
  */
 function services_documentation_method_element($method) {
+
   // Call the documentation callback to generate the render element.
   if (!empty($method['documentation callback']) && function_exists(($method['documentation callback']))) {
     $documentation_callback = $method['documentation callback'];
@@ -70,6 +71,19 @@ function services_documentation_method_element($method) {
   // via hook_element_info() implementation.
   $element['#type'] = 'services_documentation_method';
   $element['#method'] = isset($element['#method']) ? array_merge_recursive($method, (array) $element['#method']) : $method;
+  $element['#anchor'] = drupal_clean_css_identifier($method['resource']['name'] . '-' . $method['name']);
+
+  // Set full path to method, if necessary.
+  if (empty($element['#path'])) {
+    $element['#path'] = '/' . trim($method['endpoint']->path, '/') . '/' . $method['resource']['name'];
+    // Index methods to not include the method suffix in their paths.
+    if ($method['name'] != 'index') {
+      $element['#path'] .= '/' . $method['name'];
+    }
+  }
+  else {
+    $element['#path'] = '/' . trim($method['endpoint']->path, '/') . '/' . trim($element['#path'], '/');
+  }
 
   // Set HTTP verb for method, if necessary.
   if (empty($element['#verb'])) {
@@ -78,6 +92,8 @@ function services_documentation_method_element($method) {
       $element['#verb'] = $verbs[$method['name']];
     }
   }
+
+  $element['#title'] = $element['#verb'] . ' ' . $element['#path'];
 
   // Attache example implementations.
   services_documentation_method_element_examples($element);

@@ -6,6 +6,7 @@
  * Template file for theming the documentation for a given Services method.
  *
  * Available custom variables:
+ * - $anchor: a CSS anchor for this method.
  * - $name:
  * - $path:
  * - $weight:
@@ -21,6 +22,7 @@
 ?>
 <!-- services-documentation-method -->
 <div class="resource-method">
+  <a name="<?php print $anchor; ?>"></a>
   <?php if (!empty($path)): ?>
     <h4 class="method-title">
       <?php if (!empty($verb)): ?>

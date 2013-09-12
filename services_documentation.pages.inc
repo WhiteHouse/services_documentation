@@ -51,12 +51,18 @@ function services_documentation_version_page($endpoint) {
         // Attach helpful properties to $method.
         $method['name'] = $method_name;
         $method['endpoint'] = $endpoint;
+        $method['resource'] = $resource + array('name' => $resource_name);
         $method['bundle'] = $method_bundle_type;
 
         $element = services_documentation_method_element($method);
 
         // Add properties for this method.
+
         $output[$resource_name]['#method_bundles'][$method_bundle_type]['#methods'][$method_name] = $element;
+
+        // Add this resource to the table of contents.
+        $link_title = '<span class="verb">' . $element['#verb'] . '</span> <span class="path">' . $element['#path'] . '</span>';
+        $table_of_contents['#items'][$method_name] = l($link_title, current_path(), array('fragment' => $element['#anchor'], 'html' => TRUE));
       }
 
       // Add properties for this method bundle.
@@ -67,9 +73,6 @@ function services_documentation_version_page($endpoint) {
     // Add properties to for this resource.
     $output[$resource_name]['#theme'] = 'services_documentation_resource';
     $output[$resource_name]['#name'] = $resource_name;
-
-    // Add this resource to the table of contents.
-    $table_of_contents['#items'][$resource_name] = l($resource_name, current_path(), array('fragment' => $resource_name));
   }
 
   // Restructure for template processing.
@@ -88,3 +91,4 @@ function services_documentation_version_page($endpoint) {
 
   return $output;
 }
+
