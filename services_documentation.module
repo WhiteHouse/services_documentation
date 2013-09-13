@@ -52,12 +52,43 @@ function services_documentation_menu() {
  * Implements hook_permission().
  */
 function services_documentation_permission() {
-  return array(
-    'view services documentation' => array(
-      'title' => t('view services documentation'),
-      'description' => t('View services documentation.'),
-    ),
+  $permissions = array();
+
+  $permissions['view services documentation'] = array(
+    'title' => t('view services documentation'),
+    'description' => t('View services documentation.'),
   );
+
+  module_load_include('inc', 'services_documentation');
+
+  // Generate a permission per enabled method, per resource, per endpoint.
+  $endpoints = services_endpoint_load_all();
+  foreach ($endpoints as $endpoint_id => $endpoint) {
+    $resources = services_documentation_build_documentation($endpoint);
+    // Cycle through resources. E.g., users, taxonomy_term, etc.
+    foreach ($resources as $resource_name => $resource) {
+      // Cycle through operation bundles. E.g., targeted_actions, actions, etc.
+      foreach ($resource as $method_bundle_type => $method_bundle) {
+        // Cycle through each operation in bundle. E.g., create, retrieve, etc.
+        foreach ($method_bundle as $method_name => $method) {
+          $permission_name = 'view ' . $endpoint_id . ' ' . $resource_name . ' ' . $method_name . ' documentation';
+          $method_title = $endpoint_id . ' > ' . $resource_name . ' > ' . $method_name;
+          $vars = array(
+            '@endpoint_id' => $endpoint_id,
+            '@resource_name' => $resource_name,
+            '@method_name' => $method_name,
+            '@method_title' => $method_title,
+          );
+          $permissions[$permission_name] = array(
+            'title' => t('View services documentation for @method_title', $vars),
+            'description' => t('View services documentation for the @method_name method of the @resource_name resource at the @endpoint_id endpoint.', $vars),
+          );
+        }
+      }
+    }
+  }
+
+  return $permissions;
 }
 
 /**
@@ -208,3 +239,4 @@ function services_documentation_format_method($element) {
 
   return $element;
 }
+

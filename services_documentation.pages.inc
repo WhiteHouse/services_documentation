@@ -48,31 +48,37 @@ function services_documentation_version_page($endpoint) {
     foreach ($resource as $method_bundle_type => $method_bundle) {
       // Cycle through each operation in bundle. E.g., create, retrieve, etc.
       foreach ($method_bundle as $method_name => $method) {
-        // Attach helpful properties to $method.
-        $method['name'] = $method_name;
-        $method['endpoint'] = $endpoint;
-        $method['resource'] = $resource + array('name' => $resource_name);
-        $method['bundle'] = $method_bundle_type;
+        $permission_name = 'view ' . $endpoint->name . ' ' . $resource_name . ' ' . $method_name . ' documentation';
+        if (user_access($permission_name)) {
+          // Attach helpful properties to $method.
+          $method['name'] = $method_name;
+          $method['endpoint'] = $endpoint;
+          $method['resource'] = $resource + array('name' => $resource_name);
+          $method['bundle'] = $method_bundle_type;
 
-        $element = services_documentation_method_element($method);
+          $element = services_documentation_method_element($method);
 
-        // Add properties for this method.
+          // Add properties for this method.
+          $output[$resource_name]['#method_bundles'][$method_bundle_type]['#methods'][$method_name] = $element;
 
-        $output[$resource_name]['#method_bundles'][$method_bundle_type]['#methods'][$method_name] = $element;
-
-        // Add this resource to the table of contents.
-        $link_title = '<span class="verb">' . $element['#verb'] . '</span> <span class="path">' . $element['#path'] . '</span>';
-        $table_of_contents['#items'][$method_name] = l($link_title, current_path(), array('fragment' => $element['#anchor'], 'html' => TRUE));
+          // Add this resource to the table of contents.
+          $link_title = '<span class="verb">' . $element['#verb'] . '</span> <span class="path">' . $element['#path'] . '</span>';
+          $table_of_contents['#items'][$method_name] = l($link_title, current_path(), array('fragment' => $element['#anchor'], 'html' => TRUE));
+        }
       }
 
       // Add properties for this method bundle.
-      $output[$resource_name]['#method_bundles'][$method_bundle_type]['#name'] = $method_bundle_type;
-      $output[$resource_name]['#method_bundles'][$method_bundle_type]['#theme'] = 'services_documentation_method_bundle';
+      if (!empty($output[$resource_name]['#method_bundles'][$method_bundle_type])) {
+        $output[$resource_name]['#method_bundles'][$method_bundle_type]['#name'] = $method_bundle_type;
+        $output[$resource_name]['#method_bundles'][$method_bundle_type]['#theme'] = 'services_documentation_method_bundle';
+      }
     }
 
     // Add properties to for this resource.
-    $output[$resource_name]['#theme'] = 'services_documentation_resource';
-    $output[$resource_name]['#name'] = $resource_name;
+    if (!empty($output[$resource_name])) {
+      $output[$resource_name]['#theme'] = 'services_documentation_resource';
+      $output[$resource_name]['#name'] = $resource_name;
+    }
   }
 
   // Restructure for template processing.
@@ -83,7 +89,7 @@ function services_documentation_version_page($endpoint) {
   );
 
   // Add table of contents to output.
-  if (variable_get('services_documentation_toc', TRUE)) {
+  if (!empty($table_of_contents['#items']) && variable_get('services_documentation_toc', TRUE)) {
     asort($table_of_contents['#items']);
     $table_of_contents['#theme'] = 'item_list';
     $output = array_merge(array('#table_of_contents' => $table_of_contents), $output);
