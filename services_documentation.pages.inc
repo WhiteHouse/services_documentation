@@ -63,7 +63,7 @@ function services_documentation_version_page($endpoint) {
 
           // Add this resource to the table of contents.
           $link_title = '<span class="verb">' . $element['#verb'] . '</span> <span class="path">' . $element['#path'] . '</span>';
-          $table_of_contents['#items'][$method_name] = l($link_title, current_path(), array('fragment' => $element['#anchor'], 'html' => TRUE));
+          $table_of_contents['#items'][$resource_name . '_' . $method_name] = l($link_title, current_path(), array('fragment' => $element['#anchor'], 'html' => TRUE));
         }
       }
 
