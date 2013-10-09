@@ -94,14 +94,20 @@ function services_documentation_method_element($method) {
 
   $element['#title'] = $element['#verb'] . ' ' . $element['#path'];
 
-  // Attache example implementations.
+  // Attach example implementations.
   services_documentation_method_element_examples($element);
+
+  foreach ($element['#method']['args'] as $key => $value) {
+    if (isset($value['hidden']) && $value['hidden']) {
+      unset($element['#method']['args'][$key]);
+    }
+  }
 
   return $element;
 }
 
 /**
- * Attaches example implmentations to a method element.
+ * Attaches example implementations to a method element.
  */
 function services_documentation_method_element_examples(&$element) {
   // Loop through the example implementation arrays and apply appropriate
