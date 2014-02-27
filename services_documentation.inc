@@ -28,8 +28,9 @@ function services_documentation_build_documentation($endpoint) {
               continue;
             }
             if (is_array($resource[$method_bundle_type][$method_name])) {
-              // @todo make callback optional, add UI for specifying values.
-              if (!empty($method['documentation callback'])) {
+              // If there is a documentation callback or saved values in the db.
+              if (!empty($method['documentation callback']) ||
+                  !empty($endpoint->server_settings['docs'][$resource_name][$method_bundle_type][$method_name]['enable'])) {
                 $documentation_resources[$resource_name][$method_bundle_type][$method_name] = $method;
               }
             }
@@ -42,22 +43,35 @@ function services_documentation_build_documentation($endpoint) {
   return $documentation_resources;
 }
 
-
 /**
  * Generate a renderable element for a services documentation method.
  */
 function services_documentation_method_element($method) {
+
+  $resource_name = $method['resource']['name'];
+  $method_bundle = $method['bundle'];
+  $method_name = $method['name'];
 
   // Call the documentation callback to generate the render element.
   if (!empty($method['documentation callback']) && function_exists(($method['documentation callback']))) {
     $documentation_callback = $method['documentation callback'];
     $element = call_user_func_array($documentation_callback, array());
   }
-  else {
-    // @todo build defaults from variables.
+  // Load docs settings from db.
+  elseif (!empty($method['endpoint']->server_settings['docs'][$resource_name][$method_bundle][$method_name])) {
+    $docs = $method['endpoint']->server_settings['docs'][$resource_name][$method_bundle][$method_name];
     $element = array(
-      '#name' => $method['name'],
-      '#path' => $method['endpoint']->path . '/' . $method['name'],
+      '#name' => filter_xss($docs['name']),
+      '#weight' => 1,
+      '#description' => filter_xss($docs['description']),
+      '#request' => filter_xss($docs['request_url']),
+      '#response' => filter_xss($docs['response']),
+      '#auth' => (int) $docs['auth'],
+    );
+  }
+  else {
+    $element = array(
+      '#name' => $method_name,
       '#weight' => 1,
       '#description' => '',
       '#request' => '',

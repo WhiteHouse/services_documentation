@@ -13,7 +13,7 @@ function services_documentation_versions_overview_page($endpoints) {
 
   $items = array();
   foreach ($endpoints as $endpoint_id => $endpoint) {
-    $items[$endpoint_id] = l(t($endpoint->name), $base_path . '/' . $endpoint_id);
+    $items[$endpoint_id] = l(t('@endpoint', array('@endpoint' => $endpoint->name)), $base_path . '/' . $endpoint_id);
   }
 
   $output = array(
@@ -97,4 +97,3 @@ function services_documentation_version_page($endpoint) {
 
   return $output;
 }
-

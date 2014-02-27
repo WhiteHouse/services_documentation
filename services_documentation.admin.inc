@@ -40,7 +40,6 @@ function services_documentation_configure() {
     '#description' => t('If enabled, method bundle titles will be displayed. E.g., operations, relationships, targeted actions, etc.'),
   );
 
-
   // Designate verbs to use.
   $form['services_documentation_verbs'] = array(
     '#type' => 'radios',
@@ -129,7 +128,7 @@ function services_documentation_configure() {
  */
 function services_documentation_config_submit($form, &$form_state) {
   $services_documentation_base_path = $form_state['values']['services_documentation_base_path'];
-  if (variable_get('services_documentation_base_path', 'developers') !=  $services_documentation_base_path) {
+  if (variable_get('services_documentation_base_path', 'developers') != $services_documentation_base_path) {
     variable_set('services_documentation_base_path', $services_documentation_base_path);
     drupal_set_message('You will need to clear menu caches before changes to the base path take effect.');
   }
@@ -153,4 +152,139 @@ function services_documentation_config_submit($form, &$form_state) {
   // Simple variable saves.
   variable_set('services_documentation_intro', $form_state['values']['services_documentation_intro']);
   variable_set('services_documentation_toc', $form_state['values']['services_documentation_toc']);
+}
+
+
+/**
+ * Configuration settings for specific resource operations.
+ */
+function services_documentation_op_docs_form($form, &$form_state, $endpoint, $resource_name, $class, $operation_name) {
+
+  $form_state['endpoint'] = $endpoint;
+  $form_state['resource_name'] = $resource_name;
+  $form_state['class'] = $class;
+  $form_state['operation_name'] = $operation_name;
+
+  $docs_settings = array();
+  if (!empty($endpoint->server_settings['docs'][$resource_name][$class][$operation_name])) {
+    $docs_settings = $endpoint->server_settings['docs'][$resource_name][$class][$operation_name];
+  }
+
+  $form['enable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable display of custom documentation'),
+    '#description' => t('If checked, custom documentation for this operation will be displayed.'),
+    '#default_value' => services_documentation_get_default_value($docs_settings, 'enable'),
+  );
+  $form['description'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Description'),
+    '#description' => t('A description of this operation.'),
+    '#default_value' => services_documentation_get_default_value($docs_settings, 'description'),
+  );
+  $form['request_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Request URL'),
+    '#description' => t('An example Request URL for this operation. E.g., /myapi/myresource?myvar=myvalue.'),
+    '#default_value' => services_documentation_get_default_value($docs_settings, 'request_url'),
+  );
+  $form['response'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Response'),
+    '#description' => t('An example response. E.g., {}.'),
+    '#default_value' => services_documentation_get_default_value($docs_settings, 'response'),
+  );
+  $form['auth'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Authorization'),
+    '#description' => t('Check this box is authorization is required for this operation.'),
+    '#default_value' => services_documentation_get_default_value($docs_settings, 'auth'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+/**
+ * Validation callback for services_documentation_op_docs_form.
+ */
+function services_documentation_op_docs_form_validate(&$form, &$form_state) {
+
+}
+
+/**
+ * Submit callback for services_documentation_op_docs_form.
+ */
+function services_documentation_op_docs_form_submit($form, &$form_state) {
+  $resource_name = $form_state['resource_name'];
+  $class = $form_state['class'];
+  $operation_name = $form_state['operation_name'];
+
+  $values = $form_state['values'];
+  // Unsetting unneeded values allows other modules to form_alter() the
+  // docs for and foist new data into $endpoint->server_settings.
+  unset($values['submit']);
+  unset($values['op']);
+  unset($values['form_build_id']);
+  unset($values['form_token']);
+  unset($values['form_id']);
+
+  $endpoint = $form_state['endpoint'];
+  $endpoint->server_settings['docs'][$resource_name][$class][$operation_name] = $values;
+  services_endpoint_save($endpoint);
+}
+
+/**
+ * Returns a key from $settings, or else returns a default value.
+ *
+ * @param array $settings
+ *   An array of settings.
+ *
+ * @param string $key
+ *   A key within the settings array.
+ *
+ * @param mixed $default
+ *   (optional) The default value to be returned if the key is not found in
+ *   the settings.
+ *
+ * @return mixed
+ *   The value settings value or default value.
+ */
+function services_documentation_get_default_value($settings, $key, $default = NULL) {
+  if (!empty($settings[$key])) {
+    return $settings[$key];
+  }
+  elseif (isset($default)) {
+    return $default;
+  }
+
+  return '';
+}
+
+/**
+ * Title callback for services_documentation_op_docs_form menu router item.
+ *
+ * @param string $endpoint_name
+ *   The endpoint name. E.g., api_v1.
+ *
+ * @param string $resource_name
+ *   The resource name. E.g., node.
+ *
+ * @param string $op_name
+ *   The operation name. E.g., index.
+ *
+ * @return string
+ *   The page title.
+ */
+function services_documentation_op_docs_form_title($endpoint_name, $resource_name, $op_name) {
+  $title = t('Services -> @endpoint -> @resource -> @operation -> Docs', array(
+    '@endpoint' => $endpoint_name,
+    '@resource' => $resource_name,
+    '@operation' => $op_name,
+  ));
+
+  return $title;
 }
