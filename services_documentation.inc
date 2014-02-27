@@ -104,6 +104,11 @@ function services_documentation_method_element($method) {
     if (!empty($verbs[$method['name']])) {
       $element['#verb'] = $verbs[$method['name']];
     }
+    elseif (!empty($verbs[$method['bundle']])) {
+      // If there is no verb for the method, see if there's one for the bundle.
+      // This allows customized verbs for "actions", "relationships", etc.
+      $element['#verb'] = $verbs[$method['bundle']];
+    }
   }
 
   $element['#title'] = $element['#verb'] . ' ' . $element['#path'];
@@ -208,6 +213,9 @@ function services_documentation_verbs($style) {
         'update' => 'update',
         'delete' => 'delete',
         'index' => 'index',
+        'actions' => 'action',
+        'targeted_actions' => 'targeted action',
+        'relationships' => 'relationship',
       );
       break;
 
@@ -218,6 +226,9 @@ function services_documentation_verbs($style) {
         'update' => 'PUT',
         'delete' => 'DELETE',
         'index' => 'GET',
+        'actions' => 'POST',
+        'targeted_actions' => 'POST',
+        'relationships' => 'GET',
       );
       break;
 
@@ -228,6 +239,9 @@ function services_documentation_verbs($style) {
         'update' => 'UPDATE',
         'delete' => 'DELETE',
         'index' => 'READ',
+        'actions' => 'ACTION',
+        'targeted_actions' => 'ACTION',
+        'relationships' => 'READ',
       );
       break;
 

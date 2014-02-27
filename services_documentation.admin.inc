@@ -107,6 +107,30 @@ function services_documentation_configure() {
     '#description' => t('Select verbs used to describe operations.'),
   );
 
+  // Designate custom actions verb.
+  $form['services_documentation_verbs_custom']['actions'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom Action Verb'),
+    '#default_value' => variable_get('services_documentation_verbs_custom_action', t('action')),
+    '#description' => t('Select verbs used to describe actions.'),
+  );
+
+  // Designate custom targeted actions verb.
+  $form['services_documentation_verbs_custom']['targeted_actions'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom Targeted Action Verb'),
+    '#default_value' => variable_get('services_documentation_verbs_custom_targeted_actions', t('targeted action')),
+    '#description' => t('Select verbs used to describe targeted action.'),
+  );
+
+  // Designate custom relationships verb.
+  $form['services_documentation_verbs_custom']['relationships'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom Relationship Verb'),
+    '#default_value' => variable_get('services_documentation_verbs_custom_relationships', t('relationships')),
+    '#description' => t('Select verbs used to describe relationships.'),
+  );
+
   // Use custom submit handler, rather than system_settings_form.
   $form['actions']['#type'] = 'actions';
   $form['actions']['submit'] = array(
