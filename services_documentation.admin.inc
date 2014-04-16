@@ -303,10 +303,11 @@ function services_documentation_get_default_value($settings, $key, $default = NU
  * @return string
  *   The page title.
  */
-function services_documentation_op_docs_form_title($endpoint_name, $resource_name, $op_name) {
-  $title = t('Services -> @endpoint -> @resource -> @operation -> Docs', array(
+function services_documentation_op_docs_form_title($endpoint_name, $resource_name, $method_bundle, $op_name) {
+  $title = t('Services -> @endpoint -> @resource -> @method_bundle -> @operation -> Docs', array(
     '@endpoint' => $endpoint_name,
     '@resource' => $resource_name,
+    '@method_bundle' => $method_bundle,
     '@operation' => $op_name,
   ));
 

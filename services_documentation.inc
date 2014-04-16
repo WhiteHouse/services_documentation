@@ -64,7 +64,7 @@ function services_documentation_method_element($method) {
       '#name' => filter_xss($docs['name']),
       '#weight' => 1,
       '#description' => filter_xss($docs['description']),
-      '#request' => filter_xss($docs['request_url']),
+      '#request_url' => filter_xss($docs['request_url']),
       '#response' => filter_xss($docs['response']),
       '#auth' => (int) $docs['auth'],
     );
@@ -74,7 +74,7 @@ function services_documentation_method_element($method) {
       '#name' => $method_name,
       '#weight' => 1,
       '#description' => '',
-      '#request' => '',
+      '#request_url' => '',
       '#response' => '',
       '#auth' => !empty($method['endpoint']->authentication) ? TRUE : FALSE,
     );
@@ -89,8 +89,12 @@ function services_documentation_method_element($method) {
   // Set full path to method, if necessary.
   if (empty($element['#path'])) {
     $element['#path'] = '/' . trim($method['endpoint']->path, '/') . '/' . $method['resource']['name'];
+
     // Index methods to not include the method suffix in their paths.
-    if ($method['name'] != 'index') {
+    if ($method['name'] == 'retrieve') {
+      $element['#path'] .= '/[id]';
+    }
+    elseif ($method['name'] != 'index') {
       $element['#path'] .= '/' . $method['name'];
     }
   }

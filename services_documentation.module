@@ -39,7 +39,7 @@ function services_documentation_menu() {
   $items['admin/structure/services/list/%services_endpoint/resources/%/%/%'] = array(
     'title' => 'Services Documentation',
     'title callback' => 'services_documentation_op_docs_form_title',
-    'title arguments' => array($endpoint->name, 6, 7),
+    'title arguments' => array($endpoint->name, 6, 7, 8),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('services_documentation_op_docs_form', 4, 6, 7, 8),
     'access arguments' => array('edit services documentation'),
@@ -249,7 +249,9 @@ function services_documentation_format_method($element) {
   $element['url'] = $element['#name'] . '/' . implode('/', $element['url']);
 
   if (!empty($element['#request_url']) && valid_url($element['#request_url'])) {
-    $element['#request_url'] = l(check_plain($element['#request_url']), $element['#request_url'], array('html' => TRUE));
+    $url = drupal_parse_url($element['#request_url']);
+    $options = array('query' => $url['query'], 'html' => TRUE);
+    $element['#request_url'] = l($element['#request_url'], $url['path'], $options);
   }
 
   return $element;
