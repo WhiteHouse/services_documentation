@@ -144,9 +144,20 @@ function services_documentation_theme($existing, $type, $theme, $path) {
         'request_url' => NULL,
         'request_data' => NULL,
         'response' => NULL,
+        'errors' => NULL,
         'example_implementations_bundles' => NULL,
         'method' => NULL,
         'auth' => FALSE,
+      ),
+    ),
+    'services_documentation_method_error' => array(
+      'path' => $theme_path,
+      'template' => 'services-documentation-method-error',
+      'variables' => array(
+        'question' => NULL,
+        'description' => NULL,
+        'response' => NULL,
+        'anchor' => NULL,
       ),
     ),
     'services_documentation_implementation_bundle' => array(

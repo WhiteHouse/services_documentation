@@ -15,6 +15,7 @@
  * - $request_url: an example, fully formed request URL.
  * - $request_data: example data to POST along with request.
  * - $response: example response data.
+ * - $errors: errors that may be returned
  * - $example_implementation_bundles:
  * - $method: the method array defined in hook_services_resources().
  * - $auth (boolean): indicates whether authentication is required.
@@ -86,6 +87,15 @@
     <div class="method-response">
       <h5 class="response-title">Response Example</h5>
       <pre class="response-body"><?php print $response; ?></pre>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($errors): ?>
+    <div class="method-errors">
+      <h5 class="title">Errors</h5>
+        <?php foreach ($errors as $error): ?>
+          <?php print render($error); ?>
+        <?php endforeach; ?>
     </div>
   <?php endif; ?>
 
