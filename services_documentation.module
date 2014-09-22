@@ -243,11 +243,9 @@ function services_documentation_format_method($element) {
   }
   $element['url'] = $element['#name'] . '/' . implode('/', $element['url']);
 
-
   if (!empty($element['#request_url']) && valid_url($element['#request_url'])) {
     $element['#request_url'] = l(check_plain($element['#request_url']), $element['#request_url'], array('html' => TRUE));
   }
 
   return $element;
 }
-
