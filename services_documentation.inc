@@ -28,8 +28,9 @@ function services_documentation_build_documentation($endpoint) {
               continue;
             }
             if (is_array($resource[$method_bundle_type][$method_name])) {
-              // @todo make callback optional, add UI for specifying values.
-              if (!empty($method['documentation callback'])) {
+              // If there is a documentation callback or saved values in the db.
+              if (!empty($method['documentation callback']) ||
+                  !empty($endpoint->server_settings['docs'][$resource_name][$method_bundle_type][$method_name]['enable'])) {
                 $documentation_resources[$resource_name][$method_bundle_type][$method_name] = $method;
               }
             }
@@ -42,25 +43,38 @@ function services_documentation_build_documentation($endpoint) {
   return $documentation_resources;
 }
 
-
 /**
  * Generate a renderable element for a services documentation method.
  */
 function services_documentation_method_element($method) {
+
+  $resource_name = $method['resource']['name'];
+  $method_bundle = $method['bundle'];
+  $method_name = $method['name'];
 
   // Call the documentation callback to generate the render element.
   if (!empty($method['documentation callback']) && function_exists(($method['documentation callback']))) {
     $documentation_callback = $method['documentation callback'];
     $element = call_user_func_array($documentation_callback, array());
   }
-  else {
-    // @todo build defaults from variables.
+  // Load docs settings from db.
+  elseif (!empty($method['endpoint']->server_settings['docs'][$resource_name][$method_bundle][$method_name])) {
+    $docs = $method['endpoint']->server_settings['docs'][$resource_name][$method_bundle][$method_name];
     $element = array(
-      '#name' => $method['name'],
-      '#path' => $method['endpoint']->path . '/' . $method['name'],
+      '#name' => filter_xss($docs['name']),
+      '#weight' => 1,
+      '#description' => filter_xss($docs['description']),
+      '#request_url' => filter_xss($docs['request_url']),
+      '#response' => filter_xss($docs['response']),
+      '#auth' => (int) $docs['auth'],
+    );
+  }
+  else {
+    $element = array(
+      '#name' => $method_name,
       '#weight' => 1,
       '#description' => '',
-      '#request' => '',
+      '#request_url' => '',
       '#response' => '',
       '#auth' => !empty($method['endpoint']->authentication) ? TRUE : FALSE,
     );
@@ -75,8 +89,12 @@ function services_documentation_method_element($method) {
   // Set full path to method, if necessary.
   if (empty($element['#path'])) {
     $element['#path'] = '/' . trim($method['endpoint']->path, '/') . '/' . $method['resource']['name'];
+
     // Index methods to not include the method suffix in their paths.
-    if ($method['name'] != 'index') {
+    if ($method['name'] == 'retrieve') {
+      $element['#path'] .= '/[id]';
+    }
+    elseif ($method['name'] != 'index') {
       $element['#path'] .= '/' . $method['name'];
     }
   }
@@ -89,6 +107,11 @@ function services_documentation_method_element($method) {
     $verbs = services_documentation_verbs(variable_get('services_documentation_verbs', 'services'));
     if (!empty($verbs[$method['name']])) {
       $element['#verb'] = $verbs[$method['name']];
+    }
+    elseif (!empty($verbs[$method['bundle']])) {
+      // If there is no verb for the method, see if there's one for the bundle.
+      // This allows customized verbs for "actions", "relationships", etc.
+      $element['#verb'] = $verbs[$method['bundle']];
     }
   }
 
@@ -201,6 +224,9 @@ function services_documentation_verbs($style) {
         'update' => 'update',
         'delete' => 'delete',
         'index' => 'index',
+        'actions' => 'action',
+        'targeted_actions' => 'targeted action',
+        'relationships' => 'relationship',
       );
       break;
 
@@ -211,6 +237,9 @@ function services_documentation_verbs($style) {
         'update' => 'PUT',
         'delete' => 'DELETE',
         'index' => 'GET',
+        'actions' => 'POST',
+        'targeted_actions' => 'POST',
+        'relationships' => 'GET',
       );
       break;
 
@@ -221,6 +250,9 @@ function services_documentation_verbs($style) {
         'update' => 'UPDATE',
         'delete' => 'DELETE',
         'index' => 'READ',
+        'actions' => 'ACTION',
+        'targeted_actions' => 'ACTION',
+        'relationships' => 'READ',
       );
       break;
 

@@ -15,6 +15,7 @@ function services_documentation_menu() {
 
   // API versions overview.
   $endpoints = services_endpoint_load_all();
+
   $items[$base_path] = array(
     'title' => 'Services Documentation: API Versions',
     'page callback' => 'services_documentation_versions_overview_page',
@@ -34,6 +35,16 @@ function services_documentation_menu() {
       'file' => 'services_documentation.pages.inc',
     );
   }
+
+  $items['admin/structure/services/list/%services_endpoint/resources/%/%/%'] = array(
+    'title' => 'Services Documentation',
+    'title callback' => 'services_documentation_op_docs_form_title',
+    'title arguments' => array($endpoint->name, 6, 7, 8),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('services_documentation_op_docs_form', 4, 6, 7, 8),
+    'access arguments' => array('edit services documentation'),
+    'file' => 'services_documentation.admin.inc',
+  );
 
   // Provide an administration page for configuring homepage content.
   $items['admin/config/services/documentation'] = array(
@@ -225,27 +236,43 @@ function services_documentation_format_method($element) {
 
   // Create HTTP method key.
   foreach ($element['#method']['args'] as $key => $argument) {
-    if (is_array($argument['source'])) {
-      switch (key($argument['source'])) {
-        case 'param':
-          $element['#method']['args'][$key]['http_method'] = t('GET');
-          break;
+    if (!empty($argument['source'])) {
+      if (is_array($argument['source'])) {
+        switch (key($argument['source'])) {
+          case 'param':
+            $element['#method']['args'][$key]['http_method'] = t('GET');
+            break;
 
-        case 'path':
-          $element['#method']['args'][$key]['http_method'] = t('URL');
-          $element['url'][$argument['source']['path']] = '[' . $argument['name'] . ']';
-          break;
+          case 'path':
+            $element['#method']['args'][$key]['http_method'] = t('URL');
+            $element['url'][$argument['source']['path']] = '[' . $argument['name'] . ']';
+            break;
+        }
+      }
+      else {
+        $element['#method']['args'][$key]['http_method'] = t('POST');
       }
     }
     else {
-      $element['#method']['args'][$key]['http_method'] = t('POST');
+      unset($element['#method']['args'][$key]);
     }
   }
   $element['url'] = $element['#name'] . '/' . implode('/', $element['url']);
 
   if (!empty($element['#request_url']) && valid_url($element['#request_url'])) {
-    $element['#request_url'] = l(check_plain($element['#request_url']), $element['#request_url'], array('html' => TRUE));
+    $url = drupal_parse_url($element['#request_url']);
+    $options = array('query' => $url['query'], 'html' => TRUE);
+    $element['#request_url'] = l($element['#request_url'], $url['path'], $options);
   }
 
   return $element;
+}
+
+/**
+ * Implements hook_controller_settings_alter().
+ */
+function services_documentation_controller_settings_alter(&$controller_info, $op_info) {
+  $controller_info['services_documentation'] = array(
+    '#markup' => l(t('edit documentation'), "admin/structure/services/list/{$op_info['endpoint']->name}/resources/{$op_info['resource']['key']}/{$op_info['class']}/{$op_info['op']['name']}"),
+  );
 }
