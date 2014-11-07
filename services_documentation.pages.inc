@@ -30,9 +30,12 @@ function services_documentation_versions_overview_page($endpoints) {
 function services_documentation_version_page($endpoint) {
   module_load_include('inc', 'services_documentation');
 
-  $theme_path = drupal_get_path('module', 'services_documentation') . '/theme';
-  drupal_add_css($theme_path . '/services_documentation.css');
-
+  // Conditionally add CSS styling.
+  if (variable_get('services_documentation_css', TRUE)) {
+    $theme_path = drupal_get_path('module', 'services_documentation') . '/theme';
+    drupal_add_css($theme_path . '/services_documentation.css');  
+  }
+  
   $resources = services_documentation_build_documentation($endpoint);
   if (empty($resources)) {
     return t('There are no resources to document');

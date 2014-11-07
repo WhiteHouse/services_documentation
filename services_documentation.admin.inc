@@ -131,6 +131,13 @@ function services_documentation_configure() {
     '#description' => t('Select verbs used to describe relationships.'),
   );
 
+  $form['services_documentation_css'] = array(
+  '#type' => 'checkbox',
+  '#title' => t('Add default CSS styling'),
+  '#default_value' => variable_get('services_documentation_css', TRUE),
+  '#description' => t('If enabled, default CSS styling will be applied to the documentation.'),
+  );
+
   // Use custom submit handler, rather than system_settings_form.
   $form['actions']['#type'] = 'actions';
   $form['actions']['submit'] = array(
