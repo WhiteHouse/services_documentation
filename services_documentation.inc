@@ -61,7 +61,7 @@ function services_documentation_method_element($method) {
   elseif (!empty($method['endpoint']->server_settings['docs'][$resource_name][$method_bundle][$method_name])) {
     $docs = $method['endpoint']->server_settings['docs'][$resource_name][$method_bundle][$method_name];
     $element = array(
-      '#name' => filter_xss($docs['name']),
+      '#name' => $method_name,
       '#weight' => 1,
       '#description' => filter_xss($docs['description']),
       '#request_url' => filter_xss($docs['request_url']),
