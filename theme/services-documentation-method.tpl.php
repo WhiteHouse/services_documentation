@@ -1,24 +1,23 @@
 <?php
+
 /**
  * @file
- * services-documentation-method.tpl.php
+ * Default theme implementation for a method.
  *
- * Template file for theming the documentation for a given Services method.
- *
- * Available custom variables:
- * - $anchor: a CSS anchor for this method.
- * - $name:
- * - $path:
- * - $weight:
- * - $verb:
- * - $description:
- * - $request_url: an example, fully formed request URL.
- * - $request_data: example data to POST along with request.
- * - $response: example response data.
- * - $errors: errors that may be returned
- * - $example_implementation_bundles:
- * - $method: the method array defined in hook_services_resources().
- * - $auth (boolean): indicates whether authentication is required.
+ * Available variables:
+ * - $anchor: A CSS anchor for this method.
+ * - $name
+ * - $path
+ * - $weight
+ * - $verb
+ * - $description
+ * - $request_url: An example, fully formed request URL.
+ * - $request_data: Example data to POST along with request.
+ * - $response: Example response data.
+ * - $errors: Errors that may be returned.
+ * - $example_implementation_bundles
+ * - $method: The method array defined in hook_services_resources().
+ * - $auth: A boolean indicating whether or not authentication is required.
  */
 ?>
 <!-- services-documentation-method -->

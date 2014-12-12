@@ -1,12 +1,10 @@
 <?php
+
 /**
  * @file
- * services-documentation-implementation-file.tpl.php
+ * Default theme implementation for a method example implementation file.
  *
- * Template file for theming an example implementation file for a given Services
- * method.
- *
- * Available custom variables:
+ * Available variables:
  * - $name:
  * - $path:
  * - $type:

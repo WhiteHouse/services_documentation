@@ -1,13 +1,14 @@
 <?php
+
 /**
  * @file
- * Template file for theming a given Services resource.
+ * Default theme implementation for a resource.
  *
  * A given Services resource contains the following nested elements:
- * - Method bundles. E.g., operations, actions, targeted actions.
- * - Methods. E.g., create, update, index, etc.
+ * - Method bundles, e.g., operations, actions, targeted actions.
+ * - Methods, e.g., create, update, index, etc.
  *
- * Available custom variables:
+ * Available variables:
  * - $name: The name of the resource.
  * - $description: The description of the resource.
  * - $limit: Limits placed on consumers of the resource.

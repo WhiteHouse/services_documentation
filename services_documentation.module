@@ -2,9 +2,7 @@
 
 /**
  * @file
- * services_documentation.module
- *
- * Generates documentation pages for Services resources.
+ * Provides documentation pages for Services resources.
  */
 
 /**

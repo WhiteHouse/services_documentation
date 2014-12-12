@@ -1,14 +1,15 @@
 <?php
+
 /**
  * @file
- * Template file for theming a given documentation version.
+ * Default theme implementation for a documentation version.
  *
  * A given documentation version contains the following nested elements:
- * - Resources, defined by Services. E.g., user, node, etc.
- * - Method bundles. E.g., operations, actions, targeted actions.
- * - Methods. E.g., create, update, index, etc.
+ * - Resources defined by Services, e.g., user, node, etc.
+ * - Method bundles, e.g., operations, actions, targeted actions.
+ * - Methods, e.g., create, update, index, etc.
  *
- * Available custom variables:
+ * Available variables:
  * - $resources: An array of resources for this documentation version.
  * - $description
  * - $table_of_contents

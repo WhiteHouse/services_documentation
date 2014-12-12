@@ -1,14 +1,12 @@
 <?php
+
 /**
  * @file
- * services-documentation-method-example-implementations-bundles.tpl.php
+ * Default theme implementation for a method example implementations bundle.
  *
- * Template file for theming an example implementations bundle for a given
- * Services method.
- *
- * Available custom variables:
- * - $language:
- * - $examples:
+ * Available variables:
+ * - $language
+ * - $examples
  */
 ?>
 <!-- services-documentation-method-example-implementations-bundle -->

@@ -1,5 +1,5 @@
 name = Services Documentation
 description = Provides documentation pages for Services resources.
 core = 7.x
-package = services
+package = Services
 dependencies[] = services

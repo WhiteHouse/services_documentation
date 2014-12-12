@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Provides page callbacks for services_documentation module.
+ * Page callbacks for the Services Documentation module.
  */
 
 /**
@@ -33,9 +34,9 @@ function services_documentation_version_page($endpoint) {
   // Conditionally add CSS styling.
   if (variable_get('services_documentation_css', TRUE)) {
     $theme_path = drupal_get_path('module', 'services_documentation') . '/theme';
-    drupal_add_css($theme_path . '/services_documentation.css');  
+    drupal_add_css($theme_path . '/services_documentation.css');
   }
-  
+
   $resources = services_documentation_build_documentation($endpoint);
   if (empty($resources)) {
     return t('There are no resources to document');

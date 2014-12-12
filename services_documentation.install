@@ -1,8 +1,8 @@
 <?php
+
 /**
  * @file
- * services_documentation.install
- * Installation file for Services Documentation.
+ * Install, update, and uninstall functions for Services Documentation module.
  */
 
 /**

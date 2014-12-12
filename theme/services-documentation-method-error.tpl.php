@@ -1,15 +1,14 @@
 <?php
+
 /**
  * @file
- * services-documentation-method-error.tpl.php
+ * Default theme implementation for method errors.
  *
- * Template file for theming errors for a given Services method.
- *
- * Available custom variables:
- * - $question:
- * - $description:
- * - $response:
- * - $anchor:
+ * Available variables:
+ * - $question
+ * - $description
+ * - $response
+ * - $anchor
  */
 ?>
 <!-- services-documentation-method-error -->

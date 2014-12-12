@@ -1,8 +1,8 @@
 <?php
+
 /**
  * @file
- * services_documentation.admin.inc
- * Provides the Services Documentation administrative interface.
+ * Admin page callback file for the Services Documentation module.
  */
 
 /**
@@ -132,10 +132,10 @@ function services_documentation_configure() {
   );
 
   $form['services_documentation_css'] = array(
-  '#type' => 'checkbox',
-  '#title' => t('Add default CSS styling'),
-  '#default_value' => variable_get('services_documentation_css', TRUE),
-  '#description' => t('If enabled, default CSS styling will be applied to the documentation.'),
+    '#type' => 'checkbox',
+    '#title' => t('Add default CSS styling'),
+    '#default_value' => variable_get('services_documentation_css', TRUE),
+    '#description' => t('If enabled, default CSS styling will be applied to the documentation.'),
   );
 
   // Use custom submit handler, rather than system_settings_form.
@@ -273,10 +273,8 @@ function services_documentation_op_docs_form_submit($form, &$form_state) {
  *
  * @param array $settings
  *   An array of settings.
- *
  * @param string $key
  *   A key within the settings array.
- *
  * @param mixed $default
  *   (optional) The default value to be returned if the key is not found in
  *   the settings.
@@ -299,13 +297,11 @@ function services_documentation_get_default_value($settings, $key, $default = NU
  * Title callback for services_documentation_op_docs_form menu router item.
  *
  * @param string $endpoint_name
- *   The endpoint name. E.g., api_v1.
- *
+ *   The endpoint name, e.g., api_v1.
  * @param string $resource_name
- *   The resource name. E.g., node.
- *
+ *   The resource name, e.g., node.
  * @param string $op_name
- *   The operation name. E.g., index.
+ *   The operation name, e.g., index.
  *
  * @return string
  *   The page title.

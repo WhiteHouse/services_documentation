@@ -1,10 +1,11 @@
 <?php
+
 /**
  * @file
- * Template file for theming documentation versions page.
+ * Default theme implementation for the documentation versions overview.
  *
  * Available custom variables:
- * - $versions: a list of links to documentation pages for each version.
+ * - $versions: A list of links to documentation pages for each version.
  */
 ?>
 <!-- services-documentation-versions template -->

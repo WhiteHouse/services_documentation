@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
- * Provides various helper functions for services_documentation.
+ * Internal functions for the Services Documentation module.
  */
-
 
 /**
  * Generates an array of Services resources keyed by endpoint.
