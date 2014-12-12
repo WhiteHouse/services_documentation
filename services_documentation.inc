@@ -156,7 +156,7 @@ function services_documentation_method_element_examples(&$element) {
         $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#theme'] = 'services_documentation_implementation';
 
         // For this implementation, scan the files and directories.
-        if ($element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#location']) {
+        if (!empty($element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#location'])) {
 
           // Recursively scan directories.
           $directory = $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#location'];
