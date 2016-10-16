@@ -146,12 +146,12 @@ function services_documentation_method_element_examples(&$element) {
     $example_bundles = $element['#example_implementations_bundles'];
 
     // For this method, loop through each example bundle, keyed by
-    // language. E.g., Javascript, PHP, etc.
+    // language. E.g., JavaScript, PHP, etc.
     foreach ($example_bundles as $language => $example_bundle) {
       $element['#example_implementations_bundles'][$language]['#theme'] = 'services_documentation_implementation_bundle';
 
       // For this example bundle, loop through the implementations.
-      // E.g., myExampleJavascriptApp.
+      // E.g., myExampleJavaScriptApp.
       foreach ($example_bundle['#examples'] as $example_name => $example) {
         $element['#example_implementations_bundles'][$language]['#examples'][$example_name]['#theme'] = 'services_documentation_implementation';
 
